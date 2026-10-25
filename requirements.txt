@@ -1,0 +1,6 @@
+streamlit>=1.50
+tensorflow
+opencv-python
+pillow
+numpy
+plotly
