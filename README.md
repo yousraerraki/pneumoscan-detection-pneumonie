@@ -2,31 +2,43 @@
 
 Projet académique – **Yousra Erraki** · EMSI Rabat (IA & Data Science)
 
-Application Streamlit qui analyse une **radiographie thoracique** et estime la probabilité de pneumonie à l'aide d'un modèle **VGG16** (Transfer Learning + Fine-Tuning + Data Augmentation), avec une carte **Grad-CAM** qui montre les zones ayant guidé la décision.
+Application Streamlit qui analyse une **radiographie thoracique** et estime la probabilité de pneumonie avec un modèle **VGG16** (Transfer Learning), entraîné sur le dataset Kaggle [Chest X-Ray Images (Pneumonia)](https://www.kaggle.com/datasets/paultimothymooney/chest-xray-pneumonia).
 
-## Résultats (jeu de test, 624 images)
+![Analyse](screenshots/analyse.png)
 
-| Accuracy | Rappel pneumonie | Précision pneumonie | Rappel normal |
-|---|---|---|---|
-| 93 % | 98 % | 91 % | 84 % |
+## ✨ Fonctionnalités
 
-## Lancer l'application
+- **Analyse** : probabilité de pneumonie, verdict et carte **Grad-CAM** (zones de l'image qui ont guidé la décision)
+- **Seuil de décision réglable** : compromis entre pneumonies détectées et fausses alertes
+- **Évaluation** : accuracy, rappel, précision, spécificité, F1 et matrice de confusion calculés sur le dossier de test du dataset
+
+## 📊 Résultats (624 radiographies de test, seuil 50 %)
+
+| Accuracy | Rappel pneumonie | Précision | Spécificité | F1-score |
+|---|---|---|---|---|
+| 75,8 % | 99,7 % | 72,2 % | 35,9 % | 83,7 % |
+
+Le modèle détecte presque toutes les pneumonies (389 sur 390), mais génère des fausses alertes sur les poumons sains (150 sur 234). En médecine, rater une pneumonie est plus grave qu'une fausse alerte ; le **seuil de décision** permet d'ajuster ce compromis.
+
+![Performance du modèle](screenshots/modele.png)
+
+## 🚀 Lancer l'application
 
 ```bash
 pip install -r requirements.txt
 streamlit run app.py
 ```
 
-Placer le modèle entraîné `modelVGG16_FineTuning.h5` dans le même dossier que `app.py`.
+Placer le modèle entraîné (`.h5`) dans le même dossier que `app.py`. Pour l'évaluation, indiquer le chemin du dossier `chest_xray/test` dans l'onglet « Le modèle ».
 
-Données : [Chest X-Ray Images (Pneumonia) – Kaggle](https://www.kaggle.com/datasets/paultimothymooney/chest-xray-pneumonia)
+## 🔭 Pistes d'amélioration
+
+- Fine-tuning des dernières couches de VGG16 et data augmentation
+- Pondération des classes pour réduire les fausses alertes
+- Choix du seuil optimal sur un jeu de validation plus grand
+
+## 🛠️ Technologies
+
+Python · TensorFlow/Keras · VGG16 · OpenCV · Streamlit · Plotly
 
 > ⚕️ Projet académique : cet outil ne remplace pas l'avis d'un médecin.
-
-## Aperçu
-
-![Accueil](screenshots/accueil.png)
-![Analyse](screenshots/analyse.png)
-![Performance du modele](screenshots/modele.png)
-
-**Résultats sur 624 radiographies de test (seuil 50 %) :** accuracy 75,8 %, rappel pneumonie 99,7 %, spécificité 35,9 %. Le modèle détecte presque toutes les pneumonies mais génère des fausses alertes sur les poumons sains : le seuil de décision permet d ajuster ce compromis.
